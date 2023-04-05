@@ -1,20 +1,14 @@
 /* @flow */
-import mapToZero from './mapToZero';
-import stripStyle from './stripStyle';
-import stepper from './stepper';
 import defaultNow from 'performance-now';
-import defaultRaf from 'raf';
-import shouldStopAnimation from './shouldStopAnimation';
-import React from 'react';
 import PropTypes from 'prop-types';
+import defaultRaf from 'raf';
+import React from 'react';
+import mapToZero from './mapToZero';
+import shouldStopAnimation from './shouldStopAnimation';
+import stepper from './stepper';
+import stripStyle from './stripStyle';
 
-import type {
-  ReactElement,
-  PlainStyle,
-  Style,
-  Velocity,
-  MotionProps,
-} from './Types';
+import type { MotionProps, PlainStyle, Style, Velocity } from './Types';
 
 const msPerFrame = 1000 / 60;
 
@@ -243,7 +237,7 @@ export default class Motion extends React.Component<MotionProps, MotionState> {
     this.startAnimationIfNecessary();
   }
 
-  UNSAFE_componentWillReceiveProps(props: MotionProps) {
+  getDerivedStateFromProps(props: MotionProps) {
     if (this.unreadPropStyle != null) {
       // previous props haven't had the chance to be set yet; set them here
       this.clearUnreadPropStyle(this.unreadPropStyle);
@@ -264,7 +258,7 @@ export default class Motion extends React.Component<MotionProps, MotionState> {
     }
   }
 
-  render(): ReactElement {
+  render() {
     const renderedChildren = this.props.children(this.state.currentStyle);
     return renderedChildren && React.Children.only(renderedChildren);
   }

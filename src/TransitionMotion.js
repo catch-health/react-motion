@@ -1,24 +1,23 @@
 /* @flow */
-import mapToZero from './mapToZero';
-import stripStyle from './stripStyle';
-import stepper from './stepper';
-import mergeDiff from './mergeDiff';
 import defaultNow from 'performance-now';
-import defaultRaf from 'raf';
-import shouldStopAnimation from './shouldStopAnimation';
-import React from 'react';
 import PropTypes from 'prop-types';
+import defaultRaf from 'raf';
+import React from 'react';
+import mapToZero from './mapToZero';
+import mergeDiff from './mergeDiff';
+import shouldStopAnimation from './shouldStopAnimation';
+import stepper from './stepper';
+import stripStyle from './stripStyle';
 
 import type {
-  ReactElement,
+  DidLeave,
   PlainStyle,
-  Velocity,
-  TransitionStyle,
   TransitionPlainStyle,
+  TransitionProps,
+  TransitionStyle,
+  Velocity,
   WillEnter,
   WillLeave,
-  DidLeave,
-  TransitionProps,
 } from './Types';
 
 const msPerFrame = 1000 / 60;
@@ -106,12 +105,10 @@ function shouldStopAnimationAll(
 // steps:
 // turn merged style into {a?, b, c}
 //    add c, value of c is destStyles.c
-//    maybe remove a, aka call willLeave(a), then merged is either {b, c} or {a, b, c}
-// turn current (interpolating) style from {a, b} into {a?, b, c}
-//    maybe remove a
-//    certainly add c, value of c is willEnter(c)
-// loop over merged and construct new current
-// dest doesn't change, that's owner's
+//    maybe remove a, aka call willLeave(a), then merged is either {b, c} or
+// {a, b, c} turn current (interpolating) style from {a, b} into {a?, b, c}
+// maybe remove a certainly add c, value of c is willEnter(c) loop over merged
+// and construct new current dest doesn't change, that's owner's
 function mergeAndSync(
   willEnter: WillEnter,
   willLeave: WillLeave,
@@ -208,18 +205,21 @@ type TransitionMotionDefaultProps = {
 };
 
 type TransitionMotionState = {
-  // list of styles, each containing interpolating values. Part of what's passed
+  // list of styles, each containing interpolating values. Part of what's
+  // passed
   // to children function. Notice that this is
-  // Array<ActualInterpolatingStyleObject>, without the wrapper that is {key: ...,
-  // data: ... style: ActualInterpolatingStyleObject}. Only mergedPropsStyles
-  // contains the key & data info (so that we only have a single source of truth
-  // for these, and to save space). Check the comment for `rehydrateStyles` to
-  // see how we regenerate the entirety of what's passed to children function
+  // Array<ActualInterpolatingStyleObject>, without the wrapper that is {key:
+  // ..., data: ... style: ActualInterpolatingStyleObject}. Only
+  // mergedPropsStyles contains the key & data info (so that we only have a
+  // single source of truth for these, and to save space). Check the comment
+  // for `rehydrateStyles` to see how we regenerate the entirety of what's
+  // passed to children function
   currentStyles: Array<PlainStyle>,
   currentVelocities: Array<Velocity>,
   lastIdealStyles: Array<PlainStyle>,
-  lastIdealVelocities: Array<Velocity>,
-  // the array that keeps track of currently rendered stuff! Including stuff
+  lastIdealVelocities: Array<Velocity>, // the array that keeps track of
+  // currently rendered stuff! Including
+  // stuff
   // that you've unmounted but that's still animating. This is where it lives
   mergedPropsStyles: Array<TransitionStyle>,
 };
@@ -255,17 +255,27 @@ export default class TransitionMotion extends React.Component<
   };
 
   static defaultProps: TransitionMotionDefaultProps = {
-    willEnter: styleThatEntered => stripStyle(styleThatEntered.style),
-    // recall: returning null makes the current unmounting TransitionStyle
+    willEnter: styleThatEntered => stripStyle(styleThatEntered.style), // recall:
+    // returning
+    // null
+    // makes
+    // the
+    // current
+    // unmounting
+    // TransitionStyle
     // disappear immediately
     willLeave: () => null,
     didLeave: () => {},
   };
 
   unmounting: boolean = false;
+
   animationID: ?number = null;
+
   prevTime = 0;
+
   accumulatedTime = 0;
+
   // it's possible that currentStyle's value is stale: if props is immediately
   // changed from 0 to 400 to spring(0) again, the async currentStyle is still
   // at 0 (didn't have time to tick and interpolate even once). If we naively
@@ -576,7 +586,7 @@ export default class TransitionMotion extends React.Component<
     this.startAnimationIfNecessary();
   }
 
-  UNSAFE_componentWillReceiveProps(props: TransitionProps) {
+  getDerivedStateFromProps(props: TransitionProps) {
     if (this.unreadPropStyles) {
       // previous props haven't had the chance to be set yet; set them here
       this.clearUnreadPropStyle(this.unreadPropStyles);
@@ -609,7 +619,7 @@ export default class TransitionMotion extends React.Component<
     }
   }
 
-  render(): ReactElement {
+  render() {
     const hydratedStyles = rehydrateStyles(
       this.state.mergedPropsStyles,
       this.unreadPropStyles,
