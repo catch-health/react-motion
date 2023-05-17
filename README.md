@@ -17,7 +17,7 @@ Animate a counter from `0` to `10`. For more advanced usage, see below.
 
 ### Install
 
-- Npm: `npm install --save react-motion`
+- Npm: `npm install --save catch-health/react-motion`
 
 - Bower: **do not install with `bower install react-motion`, it won't work**. Use `bower install --save https://unpkg.com/react-motion/bower.zip`. Or in `bower.json`:
 ```json

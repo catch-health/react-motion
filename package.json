@@ -1,6 +1,6 @@
 {
-  "name": "@wladimirguerra/react-motion",
-  "version": "0.5.5",
+  "name": "@catch-health/react-motion",
+  "version": "0.5.6",
   "description": "A spring that solves your animation problems.",
   "main": "lib/react-motion.js",
   "module": "lib/react-motion.esm.js",
@@ -92,7 +92,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wladimirguerra/react-motion.git"
+    "url": "https://github.com/catch-health/react-motion.git"
   },
   "keywords": [
     "react",
@@ -109,11 +109,12 @@
   "authors": [
     "nkbt",
     "chenglou",
-    "wladimirguerra"
+    "wladimirguerra",
+    "catch-health"
   ],
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "7.7.2",
+    "@babel/runtime": "^7.7.2",
     "performance-now": "^2.1.0",
     "prop-types": "^15.5.8",
     "raf": "^3.1.0"
